@@ -4,7 +4,7 @@
 module Bundler
   class GemHelper
     def rubygem_push(path)
-      puts "I am successfully being overridden #{path}"
+      puts "Overriding rubygem_push to push to gemfury: #{path}"
       ::Gemfury::Command::App.start(['push', path])
     end
     protected :rubygem_push
