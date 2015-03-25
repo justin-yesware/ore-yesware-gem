@@ -1,2 +1,21 @@
+# Override rubygem_push to push to gemfury instead when doing `rake release`
+# Do this before we require gem_tasks as that instantiates GemHelper which means
+# it won't get this monkeypatch.
+module Bundler
+  class GemHelper
+    def rubygem_push(path)
+      puts "I am successfully being overridden #{path}"
+      ::Gemfury::Command::App.start(['push', path])
+    end
+    protected :rubygem_push
+  end
+end
+
+# Configure gemfury so we can push there.
+require "bundler/gem_tasks"
+require "builder"
+require "gemfury"
+require "gemfury/command"
+
 # All-in-one target for CI servers to run.
 task :ci => ['spec']
